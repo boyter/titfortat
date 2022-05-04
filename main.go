@@ -60,19 +60,6 @@ func (ex AsteroidGenerationEvaluator) GenerationEvaluate(
 //https://maori.geek.nz/learning-to-play-asteroids-in-golang-with-neat-f44c3472938f
 func runGames() {
 	rand.Seed(uint64(time.Now().UnixNano()))
-	e := experiment.Experiment{}
-
-	fmt.Println(e)
-	//e.Execute(context.TODO(), )
-	//err := e.Execute(
-	//	context.TODO(),
-	//	start_genome,
-	//	AsteroidGenerationEvaluator{
-	//		OutputPath:         out_dir_path,
-	//		PlayTimeInSeconds:  120,
-	//		FrameRatePerSecond: 15,
-	//	}
-	//)
 
 	// create the bots and play them against each other and print how they did over 1000 games
 	bots := map[string]Bot{
@@ -147,27 +134,6 @@ func runGames() {
 	for k, v := range scoreRates {
 		fmt.Println(k, "score", v)
 	}
-	//
-	//game := CreateGame()
-	//rBot := RandomBot{}
-	//tBot := TitForTatBot{}
-	//
-	//game.Play(gameDecision{
-	//	aChoice: -1,
-	//	bChoice: -1,
-	//})
-	//
-	//for !game.GameOver() {
-	//	state := game.State()
-	//	game.Play(gameDecision{
-	//		aChoice: rBot.Decision(state),
-	//		bChoice: tBot.Decision(state),
-	//	})
-	//}
-	//
-	//fmt.Println(game.Round)
-	//fmt.Println(game.AScore)
-	//fmt.Println(game.BScore)
 }
 
 func playGame() {
