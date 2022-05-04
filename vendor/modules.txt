@@ -1,0 +1,56 @@
+# github.com/kr/pretty v0.1.0
+## explicit
+# github.com/pkg/errors v0.9.1
+## explicit
+github.com/pkg/errors
+# github.com/sbinet/npyio v0.5.2
+## explicit; go 1.14
+github.com/sbinet/npyio/npy
+github.com/sbinet/npyio/npz
+# github.com/spf13/cast v1.4.1
+## explicit
+github.com/spf13/cast
+# github.com/yaricom/goNEAT/v2 v2.9.3
+## explicit; go 1.17
+github.com/yaricom/goNEAT/v2/experiment
+github.com/yaricom/goNEAT/v2/neat
+github.com/yaricom/goNEAT/v2/neat/genetics
+github.com/yaricom/goNEAT/v2/neat/math
+github.com/yaricom/goNEAT/v2/neat/network
+# golang.org/x/exp v0.0.0-20191030013958-a1ab85dbe136
+## explicit; go 1.12
+golang.org/x/exp/rand
+# gonum.org/v1/gonum v0.9.3
+## explicit; go 1.14
+gonum.org/v1/gonum/blas
+gonum.org/v1/gonum/blas/blas64
+gonum.org/v1/gonum/blas/cblas128
+gonum.org/v1/gonum/blas/gonum
+gonum.org/v1/gonum/floats
+gonum.org/v1/gonum/floats/scalar
+gonum.org/v1/gonum/graph
+gonum.org/v1/gonum/graph/encoding
+gonum.org/v1/gonum/graph/internal/linear
+gonum.org/v1/gonum/graph/internal/ordered
+gonum.org/v1/gonum/graph/internal/set
+gonum.org/v1/gonum/graph/iterator
+gonum.org/v1/gonum/graph/path
+gonum.org/v1/gonum/graph/set/uid
+gonum.org/v1/gonum/graph/simple
+gonum.org/v1/gonum/graph/traverse
+gonum.org/v1/gonum/internal/asm/c128
+gonum.org/v1/gonum/internal/asm/c64
+gonum.org/v1/gonum/internal/asm/f32
+gonum.org/v1/gonum/internal/asm/f64
+gonum.org/v1/gonum/internal/cmplx64
+gonum.org/v1/gonum/internal/math32
+gonum.org/v1/gonum/lapack
+gonum.org/v1/gonum/lapack/gonum
+gonum.org/v1/gonum/lapack/lapack64
+gonum.org/v1/gonum/mat
+gonum.org/v1/gonum/stat
+# gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127
+## explicit
+# gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
+## explicit
+gopkg.in/yaml.v3
