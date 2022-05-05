@@ -50,6 +50,18 @@ func main() {
 	// newId, in, out, n, maxHidden int, recurrent bool, linkProb float64
 	genomeRand := genetics.NewGenomeRand(0, 2, 1, 1, 10, false, 0.7)
 
+	// seems to make no difference for the thing I am trying to resolve between the above and below
+
+	//genomeFile, err := os.Open("./xorstartgenes")
+	//if err != nil {
+	//	log.Fatal("Failed to open genome file: ", err)
+	//}
+	//startGenome, err := genetics.ReadGenome(genomeFile, 1)
+	//if err != nil {
+	//	log.Fatal("Failed to read start genome: ", err)
+	//}
+	//fmt.Println(startGenome)
+
 	ctx, _ := context.WithCancel(context.Background())
 	err = exp.Execute(neat.NewContext(ctx, options), genomeRand, evaluator, nil)
 	if err != nil {
@@ -109,8 +121,12 @@ func (ex PrisonersDilemmaGenerationEvaluator) GenerationEvaluate(
 		//net.Activate()
 		//outputs := net.ReadOutputs()
 		//fmt.Println(outputs)
-
+		org.IsWinner = true
 	}
+
+	epoch.FillPopulationStatistics(pop)
+
+	//epoch.Solved = true
 
 	return nil
 }
