@@ -7,50 +7,70 @@ import (
 	"github.com/yaricom/goNEAT/v2/neat"
 	"github.com/yaricom/goNEAT/v2/neat/genetics"
 	"golang.org/x/exp/rand"
+	"log"
+	"os"
 	"time"
 )
 
 func main() {
-	// create experiment
+	seed := time.Now().Unix()
+	rand.Seed(uint64(seed))
+
+	//// create experiment
+	//options := neat.Options{
+	//	LogLevel:          "info",
+	//	NumRuns:           100,
+	//	PopSize:           100,
+	//	CompatThreshold:   0.5,
+	//	EpochExecutorType: neat.EpochExecutorTypeSequential,
+	//}
+
+	// Load neatOptions configuration
+	configFile, err := os.Open("./xor.neat")
+	if err != nil {
+		log.Fatal("Failed to open context configuration file: ", err)
+	}
+	options, err := neat.LoadNeatOptions(configFile)
+	if err != nil {
+		log.Fatal("Failed to load NEAT options: ", err)
+	}
+
 	exp := experiment.Experiment{
 		Id:       0,
 		Trials:   make(experiment.Trials, 100),
-		RandSeed: time.Now().UnixMilli(),
+		RandSeed: seed,
 	}
-	options := neat.Options{
-		LogLevel:          "info",
-		NumRuns:           100,
-		PopSize:           100,
-		CompatThreshold:   1,
-		EpochExecutorType: neat.EpochExecutorTypeParallel,
-	}
+
 	exp.MaxFitnessScore = 16
 
+	var evaluator PrisonersDilemmaGenerationEvaluator
 	// This special constructor creates a Genome with in inputs, out outputs, n out of maxHidden hidden units, and random
 	// connectivity.  If rec is true then recurrent connections will be included. The last input is a bias
 	// link_prob is the probability of a link. The created genome is not modular.
 	// newId, in, out, n, maxHidden int, recurrent bool, linkProb float64
 	genomeRand := genetics.NewGenomeRand(0, 2, 1, 1, 10, false, 0.7)
 
-	err := exp.Execute(neat.NewContext(context.TODO(), &options), genomeRand, AsteroidGenerationEvaluator{}, nil)
+	ctx, _ := context.WithCancel(context.Background())
+	err = exp.Execute(neat.NewContext(ctx, options), genomeRand, evaluator, nil)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
 	//runGames()
 }
 
-type AsteroidGenerationEvaluator struct{}
+type PrisonersDilemmaGenerationEvaluator struct{}
 
 //GenerationEvaluate(pop *genetics.Population, epoch *Generation, context *neat.Options) (err error)
-func (ex AsteroidGenerationEvaluator) GenerationEvaluate(
+func (ex PrisonersDilemmaGenerationEvaluator) GenerationEvaluate(
 	pop *genetics.Population,
 	epoch *experiment.Generation,
 	context *neat.Options,
 ) (err error) {
 	// Calculate the fitness of all organisms in the population
-	fmt.Println("here")
+	fmt.Println("!!!HERE!!!")
 	for _, org := range pop.Organisms {
 		fmt.Println(org)
+		time.Sleep(1 * time.Second)
 	}
 
 	return nil
@@ -147,7 +167,7 @@ func playGame() {
 }
 
 //
-//func (ex AsteroidGenerationEvaluator) GenerationEvaluate(
+//func (ex PrisonersDilemmaGenerationEvaluator) GenerationEvaluate(
 //	population *genetics.Population,
 //	epoch *experiments.Generation,
 //	context *neat.NeatContext,
