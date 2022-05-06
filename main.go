@@ -60,6 +60,9 @@ func main() {
 	}
 
 	exp.PrintStatistics()
+
+	// load genome so we can use it to make decisions
+	// https://github.com/grahamjenson/asteroids/blob/87ede95c60b0aacd8fc6a4b4751e15c2197978c6/wasm/main.go#L163
 }
 
 type PrisonersDilemmaGenerationEvaluator struct{}
