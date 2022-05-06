@@ -99,20 +99,25 @@ func (e *PrisonersDilemmaGenerationEvaluator) orgEvaluate(organism *genetics.Org
 
 	b := RandomBot{}
 	netDepth, _ := organism.Phenotype.MaxActivationDepthFast(0) // The max depth of the network to be activated
-	net := organism.Phenotype
 
 	for !game.GameOver() {
 		// get the game state
 		state := game.State()
 
 		// set up our input
-		_ = net.LoadSensors([]float64{
+		err := organism.Phenotype.LoadSensors([]float64{
 			float64(state.aPrevious),
 			float64(state.bPrevious),
 		})
+		if err != nil {
+			fmt.Println(err.Error())
+		}
 
 		// run the network
-		_, _ = net.ForwardSteps(netDepth)
+		_, err = organism.Phenotype.ForwardSteps(netDepth)
+		if err != nil {
+			fmt.Println(err.Error())
+		}
 
 		decision := Cooperate
 		if organism.Phenotype.Outputs[0].Activation > 0.5 {
@@ -127,9 +132,9 @@ func (e *PrisonersDilemmaGenerationEvaluator) orgEvaluate(organism *genetics.Org
 
 	organism.Fitness = float64(game.AScore)
 	organism.Error = 0.0
-	organism.IsWinner = rand.Intn(10)%2 == 0
+	//organism.IsWinner = rand.Intn(10)%2 == 0
 
-	return false, nil
+	return organism.IsWinner, nil
 }
 
 //
