@@ -16,15 +16,6 @@ func main() {
 	seed := time.Now().Unix()
 	rand.Seed(uint64(seed))
 
-	//// create experiment
-	//options := neat.Options{
-	//	LogLevel:          "info",
-	//	NumRuns:           100,
-	//	PopSize:           100,
-	//	CompatThreshold:   0.5,
-	//	EpochExecutorType: neat.EpochExecutorTypeSequential,
-	//}
-
 	// Load neatOptions configuration
 	configFile, err := os.Open("./xor.neat")
 	if err != nil {
@@ -69,66 +60,76 @@ func main() {
 	}
 
 	exp.PrintStatistics()
-	//runGames()
 }
 
 type PrisonersDilemmaGenerationEvaluator struct{}
 
-//GenerationEvaluate(pop *genetics.Population, epoch *Generation, context *neat.Options) (err error)
 func (ex PrisonersDilemmaGenerationEvaluator) GenerationEvaluate(
 	pop *genetics.Population,
 	epoch *experiment.Generation,
 	context *neat.Options,
 ) (err error) {
 	// Calculate the fitness of all organisms in the population
-	b := RandomBot{}
-
+	// going to fight against RandomBot
 	for _, org := range pop.Organisms {
-		game := CreateGame()
-		net := org.Phenotype
-
-		for !game.GameOver() {
-			// get the game state
-			state := game.State()
-
-			// set up our input
-			net.LoadSensors([]float64{
-				float64(state.aPrevious),
-				float64(state.bPrevious),
-			})
-
-			// run the network
-			net.Activate()
-
-			// get the output
-			outputs := net.ReadOutputs()
-
-			decision := Cooperate
-			if outputs[0] > 0.5 {
-				decision = Defect
-			}
-
-			game.Play(gameDecision{
-				aChoice: decision,
-				bChoice: b.Decision(state),
-			})
+		res, err := ex.orgEvaluate(org)
+		if err != nil {
+			return err
 		}
 
-		org.Fitness = float64(game.AScore)
-		org.Error = 0.0
-		// now play a game
-		//net.LoadSensors([]float64{0.5, 0.5})
-		//net.Activate()
-		//outputs := net.ReadOutputs()
-		//fmt.Println(outputs)
-		org.IsWinner = true
+		if res && (epoch.Best == nil || org.Fitness > epoch.Best.Fitness) {
+			epoch.Solved = true
+			epoch.WinnerNodes = len(org.Genotype.Nodes)
+			epoch.WinnerGenes = org.Genotype.Extrons()
+			epoch.WinnerEvals = context.PopSize*epoch.Id + org.Genotype.Id
+			epoch.Best = org
+			if epoch.WinnerNodes == 5 {
+				neat.InfoLog(fmt.Sprintf("Dumped optimal genome\n"))
+			}
+		}
 	}
 
 	epoch.FillPopulationStatistics(pop)
 
-	//epoch.Solved = true
-
 	return nil
+}
+
+func (e *PrisonersDilemmaGenerationEvaluator) orgEvaluate(organism *genetics.Organism) (bool, error) {
+	game := CreateGame()
+
+	b := RandomBot{}
+	netDepth, _ := organism.Phenotype.MaxActivationDepthFast(0) // The max depth of the network to be activated
+	net := organism.Phenotype
+
+	for !game.GameOver() {
+		// get the game state
+		state := game.State()
+
+		// set up our input
+		_ = net.LoadSensors([]float64{
+			float64(state.aPrevious),
+			float64(state.bPrevious),
+		})
+
+		// run the network
+		_, _ = net.ForwardSteps(netDepth)
+
+		decision := Cooperate
+		if organism.Phenotype.Outputs[0].Activation > 0.5 {
+			decision = Defect
+		}
+
+		game.Play(gameDecision{
+			aChoice: decision,
+			bChoice: b.Decision(state),
+		})
+	}
+
+	organism.Fitness = float64(game.AScore)
+	organism.Error = 0.0
+	organism.IsWinner = rand.Intn(10)%2 == 0
+
+	return false, nil
 }
 
 //
@@ -254,14 +255,4 @@ func runGames() {
 	for k, v := range scoreRates {
 		fmt.Println(k, "score", v)
 	}
-}
-
-func playGame() {
-	// create a game
-	// get the inputs
-	// pass inputs to network
-	// run the network
-	// read the output
-	// update the state
-	// if game over quit
 }
