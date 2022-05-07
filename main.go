@@ -63,6 +63,8 @@ func main() {
 
 	// load genome so we can use it to make decisions
 	// https://github.com/grahamjenson/asteroids/blob/87ede95c60b0aacd8fc6a4b4751e15c2197978c6/wasm/main.go#L163
+
+	runGames()
 }
 
 type PrisonersDilemmaGenerationEvaluator struct{}
@@ -93,6 +95,21 @@ func (ex PrisonersDilemmaGenerationEvaluator) GenerationEvaluate(
 	}
 
 	epoch.FillPopulationStatistics(pop)
+
+	// if we have a best candidate now save it
+	if epoch.Best != nil {
+		//bestOrgPath := fmt.Sprintf("best_%v_%04d", epoch.TrialId, epoch.Id)
+		bestOrgPath := "best"
+		file, err := os.Create(bestOrgPath)
+		if err != nil {
+			neat.ErrorLog(fmt.Sprintf("Failed to dump population, reason: %s\n", err))
+		} else {
+			org := epoch.Best
+			_, _ = fmt.Fprintf(file, "/* Organism #%d Fitness: %.3f Error: %.3f */\n",
+				org.Genotype.Id, org.Fitness, org.Error)
+			_ = org.Genotype.Write(file)
+		}
+	}
 
 	return nil
 }
@@ -141,51 +158,6 @@ func (e *PrisonersDilemmaGenerationEvaluator) orgEvaluate(organism *genetics.Org
 	return organism.IsWinner, nil
 }
 
-//
-//func (ex PrisonersDilemmaGenerationEvaluator) GenerationEvaluate(
-//	population *genetics.Population,
-//	epoch *experiments.Generation,
-//	context *neat.NeatContext,
-//) (err error) {
-//	// Calculate the fitness of all organisms in the population
-//	for _, org := range population.Organisms {
-//		net := org.Phenotype // Neural Network
-//		game := &asteroids.Game{}
-//		frames := PlayTimeInSeconds * FrameRatePerSecond
-//		for f = 0; f < frames; f++ {
-//			// calculate the inputs
-//			inputs := FindInputs(game)
-//			// send those inputs to the network
-//			net.LoadSensors(inputs)
-//			net.Activate() // run the network
-//			for i, output := range net.ReadOutputs() {
-//				// if a key output is pushed
-//				switch i {
-//				case 0:
-//					key = keys.KEY_UP
-//				case 1:
-//					key = keys.KEY_SPACE
-//				case 2:
-//					key = keys.KEY_LEFT
-//				case 3:
-//					key = keys.KEY_RIGHT
-//				}
-//				if output > 0.5 { // output activated
-//					pressedKeys[key] = true
-//				}
-//			}
-//			// Update the GameState
-//			game.Update(pressedKeys)
-//			if game.GameOver() {
-//				break
-//			}
-//		}
-//		// Use game score as fitness function
-//		// Fitness is normalized to between 0 and 1
-//		org.Fitness = norm(game.Score)
-//	}
-//}
-
 //https://github.com/yaricom/goNEAT/blob/master/executor.go
 //https://maori.geek.nz/learning-to-play-asteroids-in-golang-with-neat-f44c3472938f
 func runGames() {
@@ -200,6 +172,7 @@ func runGames() {
 		"RandomDefectBot":      RandomDefectBot{},
 		"TitForTatBotReverse":  TitForTatBotReverse{},
 		"OftenRandomDefectBot": OftenRandomDefectBot{},
+		"NeuralNetworkBot":     NeuralNetworkBot{},
 	}
 
 	winRates := map[string]float64{}
@@ -214,7 +187,7 @@ func runGames() {
 		k1Loses := 0
 		k1Draws := 0
 
-		gameTurns := 100_000
+		gameTurns := 1_000
 		for _, b2 := range bots {
 			for i := 0; i < gameTurns; i++ {
 				game := CreateGame()
