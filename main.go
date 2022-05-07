@@ -116,7 +116,7 @@ func (ex PrisonersDilemmaGenerationEvaluator) GenerationEvaluate(
 
 func (e *PrisonersDilemmaGenerationEvaluator) orgEvaluate(organism *genetics.Organism) (bool, error) {
 	game := CreateGame()
-	b := RandomBot{}
+	b := CooperateBot{}
 
 	netDepth, _ := organism.Phenotype.MaxActivationDepthFast(0) // The max depth of the network to be activated
 
@@ -163,6 +163,20 @@ func (e *PrisonersDilemmaGenerationEvaluator) orgEvaluate(organism *genetics.Org
 func runGames() {
 	rand.Seed(uint64(time.Now().UnixNano()))
 
+	nnbot := NeuralNetworkBot{
+		net: getGenome(`/* Organism #0 Fitness: 33.000 Error: 0.000 */
+genomestart 0
+trait 1 0 0 0 0 0 0 0 0
+node 1 1 1 1 SigmoidSteepenedActivation
+node 2 1 1 3 SigmoidSteepenedActivation
+node 3 1 0 0 SigmoidSteepenedActivation
+node 13 1 0 2 SigmoidSteepenedActivation
+gene 1 2 3 0.47155578767902206 false 27 0.47155578767902206 true
+gene 1 2 13 -0.024576662955294593 false 157 -0.024576662955294593 true
+gene 1 3 13 1.4502147215405494 false 158 1.4502147215405494 true
+genomeend 0
+`)}
+
 	// create the bots and play them against each other and print how they did over 1000 games
 	bots := map[string]Bot{
 		"RandomBot":            RandomBot{},
@@ -172,7 +186,7 @@ func runGames() {
 		"RandomDefectBot":      RandomDefectBot{},
 		"TitForTatBotReverse":  TitForTatBotReverse{},
 		"OftenRandomDefectBot": OftenRandomDefectBot{},
-		"NeuralNetworkBot":     NeuralNetworkBot{},
+		"NeuralNetworkBot":     nnbot,
 	}
 
 	winRates := map[string]float64{}

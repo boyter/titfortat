@@ -65,29 +65,18 @@ func (r OftenRandomDefectBot) Decision(state GameState) int {
 	return Cooperate
 }
 
-type NeuralNetworkBot struct{}
+type NeuralNetworkBot struct {
+	net *network.Network
+}
 
 func (r NeuralNetworkBot) Decision(state GameState) int {
-	net := getGenome(`/* Organism #87 Fitness: 25.000 Error: 0.000 */
-genomestart 87
-trait 1 0 0 0 0 0 0 0 0
-node 1 1 1 1 SigmoidSteepenedActivation
-node 2 1 1 3 SigmoidSteepenedActivation
-node 3 1 0 0 SigmoidSteepenedActivation
-node 13 1 0 2 SigmoidSteepenedActivation
-gene 1 2 3 -0.3008783999474857 false 27 -0.3008783999474857 true
-gene 1 2 13 0.5708516273454957 false 157 0.5708516273454957 true
-gene 1 3 13 0.6841751300974551 false 158 0.6841751300974551 true
-genomeend 87
-`)
-
-	_ = net.LoadSensors([]float64{
+	_ = r.net.LoadSensors([]float64{
 		float64(state.aPrevious),
 		float64(state.bPrevious),
 	})
 
-	_, _ = net.Activate()
-	outputs := net.ReadOutputs()
+	_, _ = r.net.Activate()
+	outputs := r.net.ReadOutputs()
 
 	// based on what the network says play!
 	decision := Cooperate
