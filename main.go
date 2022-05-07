@@ -41,18 +41,6 @@ func main() {
 	// newId, in, out, n, maxHidden int, recurrent bool, linkProb float64
 	genomeRand := genetics.NewGenomeRand(0, 2, 1, 1, 10, false, 0.7)
 
-	// seems to make no difference for the thing I am trying to resolve between the above and below
-
-	//genomeFile, err := os.Open("./xorstartgenes")
-	//if err != nil {
-	//	log.Fatal("Failed to open genome file: ", err)
-	//}
-	//startGenome, err := genetics.ReadGenome(genomeFile, 1)
-	//if err != nil {
-	//	log.Fatal("Failed to read start genome: ", err)
-	//}
-	//fmt.Println(startGenome)
-
 	ctx, _ := context.WithCancel(context.Background())
 	err = exp.Execute(neat.NewContext(ctx, options), genomeRand, evaluator, nil)
 	if err != nil {
@@ -60,9 +48,6 @@ func main() {
 	}
 
 	exp.PrintStatistics()
-
-	// load genome so we can use it to make decisions
-	// https://github.com/grahamjenson/asteroids/blob/87ede95c60b0aacd8fc6a4b4751e15c2197978c6/wasm/main.go#L163
 
 	runGames()
 }
