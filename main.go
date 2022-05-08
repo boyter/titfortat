@@ -186,7 +186,7 @@ genomeend 0
 		k1Loses := 0
 		k1Draws := 0
 
-		gameTurns := 1_000
+		gameTurns := 100_000
 		for _, b2 := range bots {
 			for i := 0; i < gameTurns; i++ {
 				game := CreateGame()
