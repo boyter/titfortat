@@ -6,6 +6,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+//go:build !safe
 // +build !safe
 
 package iterator
@@ -98,6 +99,7 @@ func (it *mapIter) next() bool {
 
 // m escapes into the return value, but the caller of mapiterinit
 // doesn't let the return value escape.
+//
 //go:linkname mapiterinit reflect.mapiterinit
 //go:noescape
 func mapiterinit(t, m unsafe.Pointer) unsafe.Pointer

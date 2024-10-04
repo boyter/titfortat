@@ -14,7 +14,9 @@ import (
 var _ blas.Float64Level1 = Implementation{}
 
 // Dnrm2 computes the Euclidean norm of a vector,
-//  sqrt(\sum_i x[i] * x[i]).
+//
+//	sqrt(\sum_i x[i] * x[i]).
+//
 // This function returns 0 if incX is negative.
 func (Implementation) Dnrm2(n int, x []float64, incX int) float64 {
 	if incX < 1 {
@@ -42,7 +44,9 @@ func (Implementation) Dnrm2(n int, x []float64, incX int) float64 {
 }
 
 // Dasum computes the sum of the absolute values of the elements of x.
-//  \sum_i |x[i]|
+//
+//	\sum_i |x[i]|
+//
 // Dasum returns 0 if incX is negative.
 func (Implementation) Dasum(n int, x []float64, incX int) float64 {
 	var sum float64
@@ -119,7 +123,8 @@ func (Implementation) Idamax(n int, x []float64, incX int) int {
 }
 
 // Dswap exchanges the elements of two vectors.
-//  x[i], y[i] = y[i], x[i] for all i
+//
+//	x[i], y[i] = y[i], x[i] for all i
 func (Implementation) Dswap(n int, x []float64, incX int, y []float64, incY int) {
 	if incX == 0 {
 		panic(zeroIncX)
@@ -161,7 +166,8 @@ func (Implementation) Dswap(n int, x []float64, incX int, y []float64, incY int)
 }
 
 // Dcopy copies the elements of x into the elements of y.
-//  y[i] = x[i] for all i
+//
+//	y[i] = x[i] for all i
 func (Implementation) Dcopy(n int, x []float64, incX int, y []float64, incY int) {
 	if incX == 0 {
 		panic(zeroIncX)
@@ -200,7 +206,8 @@ func (Implementation) Dcopy(n int, x []float64, incX int, y []float64, incY int)
 }
 
 // Daxpy adds alpha times x to y
-//  y[i] += alpha * x[i] for all i
+//
+//	y[i] += alpha * x[i] for all i
 func (Implementation) Daxpy(n int, alpha float64, x []float64, incX int, y []float64, incY int) {
 	if incX == 0 {
 		panic(zeroIncX)
@@ -238,14 +245,17 @@ func (Implementation) Daxpy(n int, alpha float64, x []float64, incX int, y []flo
 }
 
 // Drotg computes the plane rotation
-//   _    _      _ _       _ _
-//  |  c s |    | a |     | r |
-//  | -s c |  * | b |   = | 0 |
-//   ‾    ‾      ‾ ‾       ‾ ‾
+//
+//	 _    _      _ _       _ _
+//	|  c s |    | a |     | r |
+//	| -s c |  * | b |   = | 0 |
+//	 ‾    ‾      ‾ ‾       ‾ ‾
+//
 // where
-//  r = ±√(a^2 + b^2)
-//  c = a/r, the cosine of the plane rotation
-//  s = b/r, the sine of the plane rotation
+//
+//	r = ±√(a^2 + b^2)
+//	c = a/r, the cosine of the plane rotation
+//	s = b/r, the sine of the plane rotation
 //
 // NOTE: There is a discrepancy between the reference implementation and the BLAS
 // technical manual regarding the sign for r when a or b are zero.
@@ -387,8 +397,9 @@ func (Implementation) Drotmg(d1, d2, x1, y1 float64) (p blas.DrotmParams, rd1, r
 }
 
 // Drot applies a plane transformation.
-//  x[i] = c * x[i] + s * y[i]
-//  y[i] = c * y[i] - s * x[i]
+//
+//	x[i] = c * x[i] + s * y[i]
+//	y[i] = c * y[i] - s * x[i]
 func (Implementation) Drot(n int, x []float64, incX int, y []float64, incY int, c float64, s float64) {
 	if incX == 0 {
 		panic(zeroIncX)
@@ -539,7 +550,9 @@ func (Implementation) Drotm(n int, x []float64, incX int, y []float64, incY int,
 }
 
 // Dscal scales x by alpha.
-//  x[i] *= alpha
+//
+//	x[i] *= alpha
+//
 // Dscal has no effect if incX < 0.
 func (Implementation) Dscal(n int, alpha float64, x []float64, incX int) {
 	if incX < 1 {

@@ -10,6 +10,7 @@ import (
 // NNode is either a NEURON or a SENSOR.
 //   - If it's a sensor, it can be loaded with a value for output
 //   - If it's a neuron, it has a list of its incoming input signals ([]*Link is used)
+//
 // Use an activation count to avoid flushing
 type NNode struct {
 	// The ID of the node

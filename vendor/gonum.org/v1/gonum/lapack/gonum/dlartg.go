@@ -7,8 +7,10 @@ package gonum
 import "math"
 
 // Dlartg generates a plane rotation so that
-//  [ cs sn] * [f] = [r]
-//  [-sn cs]   [g] = [0]
+//
+//	[ cs sn] * [f] = [r]
+//	[-sn cs]   [g] = [0]
+//
 // This is a more accurate version of BLAS drotg, with the other differences that
 // if g = 0, then cs = 1 and sn = 0, and if f = 0 and g != 0, then cs = 0 and sn = 1.
 // If abs(f) > abs(g), cs will be positive.

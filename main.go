@@ -143,8 +143,8 @@ func (e *PrisonersDilemmaGenerationEvaluator) orgEvaluate(organism *genetics.Org
 	return organism.IsWinner, nil
 }
 
-//https://github.com/yaricom/goNEAT/blob/master/executor.go
-//https://maori.geek.nz/learning-to-play-asteroids-in-golang-with-neat-f44c3472938f
+// https://github.com/yaricom/goNEAT/blob/master/executor.go
+// https://maori.geek.nz/learning-to-play-asteroids-in-golang-with-neat-f44c3472938f
 func runGames() {
 	rand.Seed(uint64(time.Now().UnixNano()))
 

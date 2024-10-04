@@ -114,19 +114,22 @@ func (t TransposeBand) UntransposeBand() Banded {
 //
 // The data must be arranged in row-major order constructed by removing the zeros
 // from the rows outside the band and aligning the diagonals. For example, the matrix
-//    1  2  3  0  0  0
-//    4  5  6  7  0  0
-//    0  8  9 10 11  0
-//    0  0 12 13 14 15
-//    0  0  0 16 17 18
-//    0  0  0  0 19 20
+//
+//	1  2  3  0  0  0
+//	4  5  6  7  0  0
+//	0  8  9 10 11  0
+//	0  0 12 13 14 15
+//	0  0  0 16 17 18
+//	0  0  0  0 19 20
+//
 // becomes (* entries are never accessed)
-//     *  1  2  3
+//   - 1  2  3
 //     4  5  6  7
 //     8  9 10 11
-//    12 13 14 15
-//    16 17 18  *
-//    19 20  *  *
+//     12 13 14 15
+//     16 17 18  *
+//     19 20  *  *
+//
 // which is passed to NewBandDense as []float64{*, 1, 2, 3, 4, ...} with kl=1 and ku=2.
 // Only the values in the band portion of the matrix are used.
 func NewBandDense(r, c, kl, ku int, data []float64) *BandDense {

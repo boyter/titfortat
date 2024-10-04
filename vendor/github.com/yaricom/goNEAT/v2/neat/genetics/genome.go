@@ -13,16 +13,17 @@ import (
 
 // A Genome is the primary source of genotype information used to create  a phenotype.
 // It contains 3 major constituents:
-// 	1) A Vector of Traits
-// 	2) A List of NNodes pointing to a Trait from (1)
-// 	3) A List of Genes with Links that point to Traits from (1)
-// 	4) A List of MIMO Control Genes with Links to different genome modules
+//  1. A Vector of Traits
+//  2. A List of NNodes pointing to a Trait from (1)
+//  3. A List of Genes with Links that point to Traits from (1)
+//  4. A List of MIMO Control Genes with Links to different genome modules
 //
 // (1) Reserved parameter space for future use.
 // (2) NNode specifications.
 // (3) Is the primary source of innovation in the evolutionary Genome.
 // (4) Control genes allows to receive inputs from multiple independent genome modules and output processed signal to the
-//     multitude of output locations
+//
+//	multitude of output locations
 //
 // Each Gene in (3) has a marker telling when it arose historically. Thus, these Genes can be used to speciate the
 // population, and the list of Genes provide an evolutionary history of innovation and link-building.

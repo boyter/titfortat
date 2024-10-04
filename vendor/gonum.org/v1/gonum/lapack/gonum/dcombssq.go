@@ -7,7 +7,9 @@ package gonum
 import "math"
 
 // Dcombssq adds two scaled sum-of-squares quantities, V := V1 + V2,
-//  V_scale^2 * V_ssq := V1_scale^2 * V1_ssq + V2_scale^2 * V2_ssq
+//
+//	V_scale^2 * V_ssq := V1_scale^2 * V1_ssq + V2_scale^2 * V2_ssq
+//
 // and returns the result V.
 //
 // Dcombssq is an internal routine. It is exported for testing purposes.

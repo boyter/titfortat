@@ -15,8 +15,10 @@ import (
 // The reason this mutator is important is that if we can start NEAT with some inputs disconnected,
 // then we can allow NEAT to decide which inputs are important.
 // This process has two good effects:
-// 	(1) You can start minimally even in problems with many inputs and
-// 	(2) you don't need to know a priori what the important features of the domain are.
+//
+//	(1) You can start minimally even in problems with many inputs and
+//	(2) you don't need to know a priori what the important features of the domain are.
+//
 // If all sensors already connected than do nothing.
 func (g *Genome) mutateConnectSensors(innovations InnovationsObserver, _ *neat.Options) (bool, error) {
 
